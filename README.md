@@ -34,17 +34,18 @@ $ pnpm install
 
 ## Compile and run the project
 
+To start both simultaneously use:
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+npm start
 ```
 
+To start each one idividually use:
+```bash
+npm run start:frontend
+```
+```bash
+npm run start:backend
+```
 ## Run tests
 
 ```bash
