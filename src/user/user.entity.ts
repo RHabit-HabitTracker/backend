@@ -5,10 +5,7 @@ import { Habit } from 'src/habit/habit.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  @Column()
-  username: string;
-
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
