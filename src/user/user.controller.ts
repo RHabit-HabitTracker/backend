@@ -25,7 +25,7 @@ export class UserController {
         {
           return this.userService.readOne(id);
         }
-  @Get('/login')
+  @Post('/login')
     @ApiOperation({summary: 'Check the credentials for a User'})
     @ApiBody({type: LoginUser})
     @ApiOkResponse()
