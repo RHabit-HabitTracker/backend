@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, PartialType } from '@nestjs/swagger';
-import { PartialUser } from './partialuser.entity';
+import { LoginUser, PartialUser } from './partialuser.entity';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +25,17 @@ export class UserController {
         {
           return this.userService.readOne(id);
         }
+  @Get('/login')
+    @ApiOperation({summary: 'Check the credentials for a User'})
+    @ApiBody({type: LoginUser})
+    @ApiOkResponse()
+    @ApiNotFoundResponse()
+    login(
+      @Body() credentials: LoginUser)
+      {
+        return this.userService.login(credentials);
+      }
+    
 
   @Delete(':id')
     @ApiOperation({summary: 'Delete a user by id'})

@@ -1,4 +1,4 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsEmail, IsOptional } from "class-validator";
 import { Entity, BaseEntity } from "typeorm";
 
@@ -23,3 +23,18 @@ export class PartialUser extends BaseEntity  {
     @IsOptional()
     role?: 'user' | 'admin';
 }  
+
+@Entity()
+export class LoginUser extends BaseEntity  {
+    @ApiProperty({
+      example: 'newemail@example.com',
+    })
+    @IsEmail()
+    email: string;
+  
+    @ApiProperty({
+      example: 'Password123',
+    })
+    password: string;
+
+} 
