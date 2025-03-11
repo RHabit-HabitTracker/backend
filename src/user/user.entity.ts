@@ -3,10 +3,11 @@ import { BaseEntity } from '../shared/base';
 import { HabitAccess } from 'src/habit/habit-access.entity';
 import { Habit } from 'src/habit/habit.entity';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()
 export class User extends BaseEntity {
+
   @ApiProperty({
     example: 'example@example.com',
   })
@@ -24,7 +25,7 @@ export class User extends BaseEntity {
   passwordHash: string;
 
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'user',
   })
   @Column({

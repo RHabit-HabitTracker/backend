@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -27,6 +27,9 @@ export class UserService {
         habitsAccess: { habit: true },
       },
     });
+    if (result.length === 0) {
+      throw new NotFoundException();
+    }
     return result ? result[0] : null;
   }
 
@@ -35,6 +38,10 @@ export class UserService {
   }
 
   async delete(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    const result = await this.usersRepository.delete(id);
+  
+    if (result.affected === 0) {
+      throw new NotFoundException();
+    }
   }
 }
