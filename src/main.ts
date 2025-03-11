@@ -5,8 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const cors = require('cors');
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.use(cors({
+    origin: 'http://localhost:4200'
+  }));
   
   const config = new DocumentBuilder()
     .setTitle('Rhabit API')
