@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import bcrypt from "bcryptjs/umd/types";
+import bcrypt from "bcryptjs";
 import { LoginUser } from "src/user/partialuser.entity";
 import { User } from "src/user/user.entity";
 import { Repository } from "typeorm";

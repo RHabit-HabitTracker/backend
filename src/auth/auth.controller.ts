@@ -6,18 +6,18 @@ import {
   ApiNotFoundResponse,
 } from "@nestjs/swagger";
 import { LoginUser } from "src/user/partialuser.entity";
-import { UserService } from "src/user/user.service";
+import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly authService: AuthService) {}
 
-  @Post("/login")
+  @Post("")
   @ApiOperation({ summary: "Check the credentials for a User" })
   @ApiBody({ type: LoginUser })
   @ApiOkResponse({ description: "Successfull login" })
   @ApiNotFoundResponse({ description: "Invalid Credentials" })
   login(@Body() credentials: LoginUser) {
-    return this.userService.login(credentials);
+    return this.authService.login(credentials);
   }
 }

@@ -20,7 +20,7 @@ import {
   ApiParam,
   PartialType,
 } from "@nestjs/swagger";
-import { LoginUser, PartialUser } from "./partialuser.entity";
+import { PartialUser } from "./partialuser.entity";
 
 @Controller("user")
 export class UserController {
@@ -40,14 +40,6 @@ export class UserController {
   @ApiNotFoundResponse({ description: "User not found" })
   readOne(@Param("id") id: number) {
     return this.userService.readOne(id);
-  }
-  @Post("/login")
-  @ApiOperation({ summary: "Check the credentials for a User" })
-  @ApiBody({ type: LoginUser })
-  @ApiOkResponse({ description: "Successfull login" })
-  @ApiNotFoundResponse({ description: "Invalid Credentials" })
-  login(@Body() credentials: LoginUser) {
-    return this.userService.login(credentials);
   }
 
   @Delete(":id")
