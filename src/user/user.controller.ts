@@ -22,6 +22,7 @@ import {
   PartialType,
 } from "@nestjs/swagger";
 import { PartialUser } from "./partialuser.entity";
+import { Public } from "src/auth/decorators/public.decorator";
 
 @Controller("user")
 export class UserController {
@@ -55,7 +56,7 @@ export class UserController {
     return this.userService.delete(id);
   }
 
-  @ApiBearerAuth()
+  @Public()
   @Post("")
   @ApiOperation({ summary: "Create a user with email and password" })
   @ApiBody({ type: User })
