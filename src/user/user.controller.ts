@@ -21,8 +21,8 @@ import {
   ApiParam,
   PartialType,
 } from "@nestjs/swagger";
-import { PartialUser } from "./partialuser.entity";
 import { Public } from "src/auth/decorators/public.decorator";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Controller("user")
 export class UserController {
@@ -70,9 +70,9 @@ export class UserController {
   @Patch(":id")
   @ApiOperation({ summary: "Update userdata by id" })
   @ApiParam({ name: "id", type: Number })
-  @ApiBody({ type: PartialUser })
+  @ApiBody({ type: UpdateUserDto })
   @ApiBadRequestResponse()
-  update(@Param("id") id: number, @Body() partialUser: PartialUser) {
-    return this.userService.update(id, partialUser);
+  update(@Param("id") id: number, @Body() updateUser: UpdateUserDto) {
+    return this.userService.update(id, updateUser);
   }
 }

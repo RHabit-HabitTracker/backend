@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Habit } from './habit.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Habit } from "./habit.entity";
+import { Repository } from "typeorm";
+import { UpdateHabitDto } from "./dto/update-habit.dto";
 
 @Injectable()
 export class HabitService {
   constructor(
     @InjectRepository(Habit)
-    private habitsRepository: Repository<Habit>,
+    private habitsRepository: Repository<Habit>
   ) {}
 
   async create(habit: Habit): Promise<Habit> {
@@ -32,7 +33,7 @@ export class HabitService {
     return result ? result[0] : null;
   }
 
-  async update(id: number, data: Partial<Habit>) {
+  async update(id: number, data: UpdateHabitDto) {
     return await this.habitsRepository.update(id, data);
   }
 
