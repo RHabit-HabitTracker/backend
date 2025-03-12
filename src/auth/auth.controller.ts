@@ -7,11 +7,13 @@ import {
 } from "@nestjs/swagger";
 import { LoginUser } from "src/user/partialuser.entity";
 import { AuthService } from "./auth.service";
+import { Public } from "./decorators/public.decorator";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post("")
   @ApiOperation({ summary: "Check the credentials for a User" })
   @ApiBody({ type: LoginUser })

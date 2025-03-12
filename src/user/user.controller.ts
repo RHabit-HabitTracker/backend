@@ -11,6 +11,7 @@ import { UserService } from "./user.service";
 import { User } from "./user.entity";
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -26,6 +27,7 @@ import { PartialUser } from "./partialuser.entity";
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiBearerAuth()
   @Get("")
   @ApiOperation({ summary: "Get all users" })
   @ApiOkResponse({ description: "All Users" })
@@ -33,6 +35,7 @@ export class UserController {
     return this.userService.readAll();
   }
 
+  @ApiBearerAuth()
   @Get(":id")
   @ApiOperation({ summary: "Get a user by id" })
   @ApiParam({ name: "id", type: Number })
@@ -42,6 +45,7 @@ export class UserController {
     return this.userService.readOne(id);
   }
 
+  @ApiBearerAuth()
   @Delete(":id")
   @ApiOperation({ summary: "Delete a user by id" })
   @ApiParam({ name: "id", type: Number })
@@ -51,6 +55,7 @@ export class UserController {
     return this.userService.delete(id);
   }
 
+  @ApiBearerAuth()
   @Post("")
   @ApiOperation({ summary: "Create a user with email and password" })
   @ApiBody({ type: User })
@@ -60,6 +65,7 @@ export class UserController {
     return this.userService.create(newUser);
   }
 
+  @ApiBearerAuth()
   @Patch(":id")
   @ApiOperation({ summary: "Update userdata by id" })
   @ApiParam({ name: "id", type: Number })
