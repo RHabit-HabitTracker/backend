@@ -1,8 +1,7 @@
 import { ApiPropertyOptional, PartialType } from "@nestjs/swagger";
-import { User } from "../user.entity";
 import { IsEmail, IsOptional } from "class-validator";
 
-export class UpdateUserDto extends PartialType(User) {
+export class UpdateUserDto {
   @ApiPropertyOptional({
     example: "newemail@example.com",
   })
