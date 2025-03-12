@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import bcrypt from "bcryptjs";
-import { LoginUser } from "src/user/partialuser.entity";
-import { User } from "src/user/user.entity";
+import * as bcrypt from "bcryptjs";
+import { LoginUser } from "../user/partialuser.entity";
+import { User } from "../user/user.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
@@ -13,9 +13,11 @@ export class AuthService {
   ) {}
 
   async login(loginUser: LoginUser): Promise<User> {
+    console.log(loginUser);
     const email = loginUser.email;
     const password = loginUser.password;
     const user = await this.usersRepository.findOne({ where: { email } });
+    console.log(user);
 
     if (!user) {
       // If no user is found, throw an exception
