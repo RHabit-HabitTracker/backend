@@ -8,12 +8,15 @@ import { UserModule } from "./user/user.module";
 import { UserService } from "./user/user.service";
 import { HabitModule } from "./habit/habit.module";
 import { Habit } from "./habit/habit.entity";
-import { Tag } from "./habit/tag.entity";
+import { Tag } from "./tag/tag.entity";
 import { HabitService } from "./habit/habit.service";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { AuthModule } from "./auth/auth.module";
 import { UserController } from "./user/user.controller";
+import { TagService } from "./tag/tag.service";
+import { TagController } from "./tag/tag.controller";
+import { TagModule } from "./tag/tag.module";
 
 @Module({
   imports: [
@@ -27,9 +30,10 @@ import { UserController } from "./user/user.controller";
     UserModule,
     HabitModule,
     AuthModule,
+    TagModule,
   ],
-  controllers: [AppController, AuthController, UserController],
-  providers: [AppService, AuthService, UserService],
+  controllers: [AppController, AuthController, UserController, TagController],
+  providers: [AppService, AuthService, UserService, TagService],
 })
 export class AppModule implements OnModuleInit {
   constructor(

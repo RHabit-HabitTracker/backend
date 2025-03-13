@@ -1,5 +1,5 @@
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../shared/base';
+import { Column, Entity } from "typeorm";
+import { BaseEntity } from "../shared/base";
 
 @Entity()
 export class Tag extends BaseEntity {
