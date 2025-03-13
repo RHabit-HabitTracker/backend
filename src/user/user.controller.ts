@@ -11,14 +11,17 @@ import { UserService } from "./user.service";
 import { User } from "./user.entity";
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiHeader,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiUnauthorizedResponse,
   PartialType,
 } from "@nestjs/swagger";
 import { Public } from "src/auth/decorators/public.decorator";
@@ -32,6 +35,7 @@ export class UserController {
   @Get("")
   @ApiOperation({ summary: "Get all users" })
   @ApiOkResponse({ description: "All Users" })
+  @ApiUnauthorizedResponse()
   readAll() {
     return this.userService.readAll();
   }
@@ -42,6 +46,7 @@ export class UserController {
   @ApiParam({ name: "id", type: Number })
   @ApiOkResponse({ description: "User", type: User })
   @ApiNotFoundResponse({ description: "User not found" })
+  @ApiUnauthorizedResponse()
   readOne(@Param("id") id: number) {
     return this.userService.readOne(id);
   }
@@ -62,6 +67,7 @@ export class UserController {
   @ApiParam({ name: "id", type: Number })
   @ApiBody({ type: UpdateUserDto })
   @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse()
   update(@Param("id") id: number, @Body() updateUser: UpdateUserDto) {
     return this.userService.update(id, updateUser);
   }
@@ -72,6 +78,7 @@ export class UserController {
   @ApiParam({ name: "id", type: Number })
   @ApiOkResponse({ description: "User successfully deleted" })
   @ApiNotFoundResponse({ description: "User not found" })
+  @ApiUnauthorizedResponse()
   delete(@Param("id") id: number) {
     return this.userService.delete(id);
   }

@@ -20,6 +20,7 @@ import {
   ApiNotFoundResponse,
   ApiNoContentResponse,
   ApiBearerAuth,
+  ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import { CreateTagDto } from "./dto/create-tag.dto";
 import { UpdateTagDto } from "./dto/update-tag.dto";
@@ -27,10 +28,11 @@ import { Tag } from "./tag.entity";
 import { TagService } from "./tag.service";
 
 @Controller("tag")
+@ApiBearerAuth()
+@ApiUnauthorizedResponse()
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
-  @ApiBearerAuth()
   @Get()
   @ApiOperation({ summary: "Get all tags" })
   @ApiOkResponse({
@@ -41,7 +43,6 @@ export class TagController {
     return this.tagService.findAll();
   }
 
-  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: "Create a new tag" })
   @ApiBody({ type: CreateTagDto })
@@ -54,7 +55,6 @@ export class TagController {
     return this.tagService.create(createTagDto);
   }
 
-  @ApiBearerAuth()
   @Get("search")
   @ApiOperation({ summary: "Search tags by name" })
   @ApiQuery({
@@ -70,7 +70,6 @@ export class TagController {
     return this.tagService.findByName(name);
   }
 
-  @ApiBearerAuth()
   @Get(":id")
   @ApiOperation({ summary: "Get a tag by id" })
   @ApiParam({ name: "id", description: "Tag identifier" })
@@ -83,7 +82,6 @@ export class TagController {
     return this.tagService.findOne(+id);
   }
 
-  @ApiBearerAuth()
   @Patch(":id")
   @ApiOperation({ summary: "Update a tag" })
   @ApiParam({ name: "id", description: "Tag identifier" })
@@ -101,7 +99,6 @@ export class TagController {
     return this.tagService.update(+id, updateTagDto);
   }
 
-  @ApiBearerAuth()
   @Delete(":id")
   @ApiOperation({ summary: "Delete a tag" })
   @ApiParam({ name: "id", description: "Tag identifier" })
