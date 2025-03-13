@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray } from "class-validator";
+import { IsString, IsNotEmpty, IsArray } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateHabitDto {
@@ -15,7 +15,6 @@ export class CreateHabitDto {
     example: "Do 30 minutes of physical activity every day",
   })
   @IsString()
-  @IsOptional()
   description?: string;
 
   @ApiPropertyOptional({
@@ -23,7 +22,6 @@ export class CreateHabitDto {
     example: ["health", "fitness"],
     type: [String],
   })
-  @IsOptional()
   @IsArray()
   tags?: string[];
 
@@ -34,6 +32,5 @@ export class CreateHabitDto {
     example: "daily",
   })
   @IsString()
-  @IsOptional()
   frequency?: string;
 }

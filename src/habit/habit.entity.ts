@@ -5,12 +5,12 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-} from 'typeorm';
-import { BaseEntity } from '../shared/base';
-import { User } from 'src/user/user.entity';
-import { HabitEntry } from './habit-entry.entity';
-import { Tag } from './tag.entity';
-import { HabitAccess } from './habit-access.entity';
+} from "typeorm";
+import { BaseEntity } from "../shared/base";
+import { User } from "src/user/user.entity";
+import { HabitEntry } from "./habit-entry.entity";
+import { Tag } from "../tag/tag.entity";
+import { HabitAccess } from "./habit-access.entity";
 
 @Entity()
 export class Habit extends BaseEntity {
@@ -33,12 +33,12 @@ export class Habit extends BaseEntity {
   bestStreak: number;
 
   @Column({
-    type: 'text',
-    enum: ['daily', 'weekly', 'monthly'],
+    type: "text",
+    enum: ["daily", "weekly", "monthly"],
   })
-  frequency: 'daily' | 'weekly' | 'monthly';
+  frequency: "daily" | "weekly" | "monthly";
 
-  @Column({ nullable: true, type: 'datetime', array: true })
+  @Column({ nullable: true, type: "datetime", array: true })
   reminders?: Date[];
 
   @OneToMany(() => HabitEntry, (entry) => entry.habit, { cascade: true }) // cascade: true automatically adds entries if they were added to the array

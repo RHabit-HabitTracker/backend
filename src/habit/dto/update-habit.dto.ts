@@ -12,6 +12,5 @@ export class UpdateHabitDto extends PartialType(Habit) {
     example: "2023-04-15",
   })
   @IsString()
-  @IsOptional()
   lastCompletedDate?: string;
 }

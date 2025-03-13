@@ -38,7 +38,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get(":id")
-  @ApiOperation({ summary: "Get a user by id" })
+  @ApiOperation({ summary: "Search user by ID" })
   @ApiParam({ name: "id", type: Number })
   @ApiOkResponse({ description: "User", type: User })
   @ApiNotFoundResponse({ description: "User not found" })
@@ -46,19 +46,9 @@ export class UserController {
     return this.userService.readOne(id);
   }
 
-  @ApiBearerAuth()
-  @Delete(":id")
-  @ApiOperation({ summary: "Delete a user by id" })
-  @ApiParam({ name: "id", type: Number })
-  @ApiOkResponse({ description: "User successfully deleted" })
-  @ApiNotFoundResponse({ description: "User not found" })
-  delete(@Param("id") id: number) {
-    return this.userService.delete(id);
-  }
-
   @Public()
   @Post("")
-  @ApiOperation({ summary: "Create a user with email and password" })
+  @ApiOperation({ summary: "Create a new user" })
   @ApiBody({ type: User })
   @ApiCreatedResponse({ description: "User successfully created", type: User })
   @ApiBadRequestResponse({ description: "Bad Request" })
@@ -68,11 +58,21 @@ export class UserController {
 
   @ApiBearerAuth()
   @Patch(":id")
-  @ApiOperation({ summary: "Update userdata by id" })
+  @ApiOperation({ summary: "Update a User" })
   @ApiParam({ name: "id", type: Number })
   @ApiBody({ type: UpdateUserDto })
   @ApiBadRequestResponse()
   update(@Param("id") id: number, @Body() updateUser: UpdateUserDto) {
     return this.userService.update(id, updateUser);
+  }
+
+  @ApiBearerAuth()
+  @Delete(":id")
+  @ApiOperation({ summary: "Delete a user" })
+  @ApiParam({ name: "id", type: Number })
+  @ApiOkResponse({ description: "User successfully deleted" })
+  @ApiNotFoundResponse({ description: "User not found" })
+  delete(@Param("id") id: number) {
+    return this.userService.delete(id);
   }
 }

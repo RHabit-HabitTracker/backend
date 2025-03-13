@@ -19,15 +19,28 @@ import {
   ApiNotFoundResponse,
   ApiNoContentResponse,
   ApiBearerAuth,
+  ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import { Habit } from "./habit.entity";
 import { CreateHabitDto } from "./dto/create-habit.dto";
 import { UpdateHabitDto } from "./dto/update-habit.dto";
 
 @Controller("habit")
+@ApiBearerAuth()
+@ApiUnauthorizedResponse()
 export class HabitController {
   constructor(private readonly habitService: HabitService) {}
-  @ApiBearerAuth()
+
+  @Get()
+  @ApiOperation({ summary: "Get all habits" })
+  @ApiOkResponse({
+    description: "Returns all habits",
+    type: [Habit],
+  })
+  async findAll(): Promise<Habit[]> {
+    return this.habitService.readAll();
+  }
+
   @Post()
   @ApiOperation({ summary: "Create a new habit" })
   @ApiBody({ type: CreateHabitDto })
@@ -43,18 +56,6 @@ export class HabitController {
     return this.habitService.create(habit);
   }
 
-  @ApiBearerAuth()
-  @Get()
-  @ApiOperation({ summary: "Get all habits" })
-  @ApiOkResponse({
-    description: "Returns all habits",
-    type: [Habit],
-  })
-  async findAll(): Promise<Habit[]> {
-    return this.habitService.readAll();
-  }
-
-  @ApiBearerAuth()
   @Get(":id")
   @ApiOperation({ summary: "Get a habit by ID" })
   @ApiParam({ name: "id", description: "The ID of the habit" })
@@ -71,7 +72,6 @@ export class HabitController {
     return habit;
   }
 
-  @ApiBearerAuth()
   @Patch(":id")
   @ApiOperation({ summary: "Update a habit" })
   @ApiParam({ name: "id", description: "The ID of the habit to update" })
@@ -86,7 +86,6 @@ export class HabitController {
     return this.habitService.update(id, updateHabitDto);
   }
 
-  @ApiBearerAuth()
   @Delete(":id")
   @ApiOperation({ summary: "Delete a habit" })
   @ApiParam({ name: "id", description: "The ID of the habit to delete" })
