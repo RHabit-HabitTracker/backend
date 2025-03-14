@@ -11,18 +11,14 @@ import { UserService } from "./user.service";
 import { User } from "./user.entity";
 import {
   ApiBadRequestResponse,
-  ApiBasicAuth,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
-  ApiHeader,
-  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiUnauthorizedResponse,
-  PartialType,
 } from "@nestjs/swagger";
 import { Public } from "src/auth/decorators/public.decorator";
 import { UpdateUserDto } from "./dto/update-user.dto";

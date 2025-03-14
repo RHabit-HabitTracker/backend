@@ -8,13 +8,12 @@ export class CreateHabitDto {
   })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @ApiPropertyOptional({
     description: "A description of the habit",
     example: "Do 30 minutes of physical activity every day",
   })
-  @IsString()
   description?: string;
 
   @ApiPropertyOptional({
