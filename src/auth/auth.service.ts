@@ -10,6 +10,7 @@ import { Repository } from "typeorm";
 import { JwtService } from "@nestjs/jwt";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { UserService } from "src/user/user.service";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -57,11 +58,9 @@ export class AuthService {
 
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const partialUser: Partial<User> = { email, passwordHash };
-    try {
-      return await this.userService.create(partialUser);
-    } catch {
-      throw new BadRequestException("Couldn't create user");
-    }
+    const partialUser: CreateUserDto = { email, passwordHash };
+
+    console.log(partialUser);
+    return await this.userService.create(partialUser);
   }
 }

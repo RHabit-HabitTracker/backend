@@ -18,8 +18,8 @@ export class UserService {
   async create(user: Partial<User>): Promise<User> {
     try {
       return await this.usersRepository.save(user);
-    } catch {
-      throw new BadRequestException();
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 
