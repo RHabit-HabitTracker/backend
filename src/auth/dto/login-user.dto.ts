@@ -1,15 +1,15 @@
-import { ApiProperty, PartialType } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail } from "class-validator";
 
 export class LoginUserDto {
   @ApiProperty({
-    example: "newemail@example.com",
+    example: "test@test.de",
   })
   @IsEmail()
   email: string;
 
   @ApiProperty({
-    example: "Password123",
+    example: "test123",
   })
   password: string;
 }

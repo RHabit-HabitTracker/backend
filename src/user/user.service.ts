@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadGatewayException,
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Repository } from "typeorm";
@@ -10,8 +15,12 @@ export class UserService {
     private usersRepository: Repository<User>
   ) {}
 
-  async create(user: User): Promise<User> {
-    return await this.usersRepository.save(user);
+  async create(user: Partial<User>): Promise<User> {
+    try {
+      return await this.usersRepository.save(user);
+    } catch {
+      throw new BadRequestException();
+    }
   }
 
   // (!) Attention: If you use this api in production, implement a "where" filter
