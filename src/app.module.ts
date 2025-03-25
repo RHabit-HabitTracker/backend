@@ -61,7 +61,7 @@ export class AppModule implements OnModuleInit {
       tag.color = "blue";
       habit.tags = [tag];
 
-      const { id: habitId } = await this.habitService.create(habit);
+      const { id: habitId } = await this.habitService.create(1, habit);
 
       const userRead = await this.userService.readOne(userId);
       console.log(inspect(userRead, true, 10, true));

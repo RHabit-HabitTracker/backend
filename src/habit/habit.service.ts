@@ -1,22 +1,35 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Habit } from "./habit.entity";
-import { Repository } from "typeorm";
+import { EntityManager, Repository } from "typeorm";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { User } from "src/user/user.entity";
 
 @Injectable()
 export class HabitService {
   constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     @InjectRepository(Habit)
-    private habitsRepository: Repository<Habit>
+    private readonly habitsRepository: Repository<Habit>
   ) {}
 
-  async create(habit: Habit): Promise<Habit> {
-    return await this.habitsRepository.save(habit);
+  async create(id: number, habit: Habit): Promise<Habit> {
+    const owner = await this.userRepository.findOneBy({ id });
+    if (owner != null) {
+      habit.owner = owner;
+      var result = await this.habitsRepository.save(habit);
+    } else {
+      throw new NotFoundException();
+    }
+    return result;
   }
 
-  // (!) Attention: If you use this api in production, implement a "where" filter
-  async readAll(): Promise<Habit[]> {
-    return await this.habitsRepository.find();
+  async readAll(id: number): Promise<Habit[]> {
+    var result = await this.habitsRepository.find({
+      where: { owner: { id: id } },
+    });
+    return result;
   }
 
   async readOne(id: number): Promise<Habit | null> {
