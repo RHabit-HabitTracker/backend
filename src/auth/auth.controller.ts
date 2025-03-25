@@ -4,22 +4,36 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
 } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
 import { LoginUserDto } from "./dto/login-user.dto";
+import { User } from "src/user/user.entity";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
-  @Post("")
+  @Post("/login")
   @ApiOperation({ summary: "Check the credentials for a User" })
   @ApiBody({ type: LoginUserDto })
   @ApiOkResponse({ description: "Successfull login" })
   @ApiNotFoundResponse({ description: "Invalid Credentials" })
   login(@Body() credentials: LoginUserDto) {
     return this.authService.login(credentials);
+  }
+
+  @Public()
+  @Post("/register")
+  @ApiOperation({ summary: "Create a new user" })
+  @ApiBody({ type: LoginUserDto })
+  @ApiCreatedResponse({ description: "User successfully created", type: User })
+  @ApiBadRequestResponse({ description: "Bad Request" })
+  create(@Body() newUser: LoginUserDto) {
+    this.authService.register(newUser);
   }
 }

@@ -7,12 +7,12 @@ import { JwtModule } from "@nestjs/jwt";
 import { jwtConstants } from "./constants";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./auth.guard";
-import { UserService } from "src/user/user.service";
+import { UserModule } from "src/user/user.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    UserService,
+    UserModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
