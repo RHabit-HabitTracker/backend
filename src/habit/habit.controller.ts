@@ -24,6 +24,8 @@ import {
 import { Habit } from "./habit.entity";
 import { CreateHabitDto } from "./dto/create-habit.dto";
 import { UpdateHabitDto } from "./dto/update-habit.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { User } from "src/user/user.entity";
 
 @Controller("habit")
 @ApiBearerAuth()
@@ -49,10 +51,13 @@ export class HabitController {
     type: Habit,
   })
   @ApiBadRequestResponse({ description: "Invalid input data." })
-  async create(@Body() createHabitDto: CreateHabitDto): Promise<Habit> {
+  async create(
+    @Body() createHabitDto: CreateHabitDto,
+    @CurrentUser("sub") userId: number
+  ): Promise<Habit> {
     const habit = new Habit();
-    // Map DTO properties to entity
     Object.assign(habit, createHabitDto);
+    Object.assign(habit, { owner: userId });
     return this.habitService.create(habit);
   }
 
