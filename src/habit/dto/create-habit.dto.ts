@@ -32,4 +32,10 @@ export class CreateHabitDto {
   })
   @IsString()
   frequency?: string;
+
+  @ApiPropertyOptional({
+    description: "The owner of the Habit",
+    example: "2",
+  })
+  owner: number;
 }
