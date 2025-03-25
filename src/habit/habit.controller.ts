@@ -39,8 +39,8 @@ export class HabitController {
     description: "Returns all habits",
     type: [Habit],
   })
-  async findAll(): Promise<Habit[]> {
-    return this.habitService.readAll();
+  async findAll(@CurrentUser("sub") userId: number): Promise<Habit[]> {
+    return this.habitService.readAll(userId);
   }
 
   @Post()
@@ -57,8 +57,7 @@ export class HabitController {
   ): Promise<Habit> {
     const habit = new Habit();
     Object.assign(habit, createHabitDto);
-    Object.assign(habit, { owner: userId });
-    return this.habitService.create(habit);
+    return this.habitService.create(userId, habit);
   }
 
   @Get(":id")
