@@ -21,7 +21,7 @@ export class AuthController {
   @Post("/login")
   @ApiOperation({ summary: "Check the credentials for a User" })
   @ApiBody({ type: LoginUserDto })
-  @ApiOkResponse({ description: "Successfull login" })
+  @ApiCreatedResponse({ description: "Successfull login" })
   @ApiNotFoundResponse({ description: "Invalid Credentials" })
   login(@Body() credentials: LoginUserDto) {
     return this.authService.login(credentials);
