@@ -25,7 +25,6 @@ import { Habit } from "./habit.entity";
 import { CreateHabitDto } from "./dto/create-habit.dto";
 import { UpdateHabitDto } from "./dto/update-habit.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import { User } from "src/user/user.entity";
 
 @Controller("habit")
 @ApiBearerAuth()
@@ -57,7 +56,7 @@ export class HabitController {
   ): Promise<Habit> {
     const habit = new Habit();
     Object.assign(habit, createHabitDto);
-    return this.habitService.create(userId, habit);
+    return await this.habitService.create(userId, habit);
   }
 
   @Get(":id")

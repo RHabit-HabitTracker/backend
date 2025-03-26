@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, IsArray } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Tag } from "src/tag/tag.entity";
 
 export class CreateHabitDto {
   @ApiProperty({
@@ -19,10 +20,10 @@ export class CreateHabitDto {
   @ApiPropertyOptional({
     description: "Tags associated with this habit",
     example: ["health", "fitness"],
-    type: [String],
+    type: [Tag],
   })
   @IsArray()
-  tags?: string[];
+  tags?: Tag[];
 
   // Add other fields as needed based on your Habit entity
   // For example:

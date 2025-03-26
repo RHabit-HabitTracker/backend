@@ -21,7 +21,6 @@ export class HabitService {
     if (!owner) {
       throw new NotFoundException();
     }
-
     habit.owner = owner;
     const savedHabit = await this.habitsRepository.save(habit);
 
@@ -29,7 +28,42 @@ export class HabitService {
     const entries = this.generateHabitEntries(savedHabit);
     await this.habitEntryRepository.save(entries);
 
+    const emptyOwner = new User();
+    emptyOwner.id = owner.id;
+    savedHabit.owner = emptyOwner;
+
     return savedHabit;
+  }
+
+  async readAll(id: number): Promise<Habit[]> {
+    var result = await this.habitsRepository.find({
+      where: { owner: { id: id } },
+      relations: {
+        owner: false,
+      },
+    });
+    return result;
+  }
+
+  async readOne(id: number): Promise<Habit | null> {
+    const result = await this.habitsRepository.find({
+      where: { id },
+      relations: {
+        owner: true,
+        access: { user: true },
+        entries: true,
+        tags: true,
+      },
+    });
+    return result ? result[0] : null;
+  }
+
+  async update(id: number, data: Partial<Habit>) {
+    return await this.habitsRepository.update(id, data);
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.habitsRepository.delete(id);
   }
 
   private generateHabitEntries(habit: Habit): HabitEntry[] {
@@ -62,33 +96,5 @@ export class HabitService {
     }
 
     return entries;
-  }
-
-  async readAll(id: number): Promise<Habit[]> {
-    var result = await this.habitsRepository.find({
-      where: { owner: { id: id } },
-    });
-    return result;
-  }
-
-  async readOne(id: number): Promise<Habit | null> {
-    const result = await this.habitsRepository.find({
-      where: { id },
-      relations: {
-        owner: true,
-        access: { user: true },
-        entries: true,
-        tags: true,
-      },
-    });
-    return result ? result[0] : null;
-  }
-
-  async update(id: number, data: Partial<Habit>) {
-    return await this.habitsRepository.update(id, data);
-  }
-
-  async delete(id: number): Promise<void> {
-    await this.habitsRepository.delete(id);
   }
 }
