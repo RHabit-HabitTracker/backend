@@ -49,7 +49,6 @@ export class HabitService {
     const result = await this.habitsRepository.find({
       where: { id },
       relations: {
-        owner: true,
         access: { user: true },
         entries: true,
         tags: true,
