@@ -101,7 +101,7 @@ export class HabitController {
     return this.habitService.delete(id);
   }
 
-  @Post("entry/:id")
+  @Patch("entry/:id")
   @ApiOperation({ summary: "Create a new habit" })
   @ApiParam({ name: "id", description: "The ID of the entry to complete" })
   @ApiOkResponse({
