@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Habit } from "./habit.entity";
-import { Repository } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { User } from "src/user/user.entity";
 import { HabitEntry } from "./habit-entry.entity";
 
@@ -63,6 +63,10 @@ export class HabitService {
 
   async delete(id: number): Promise<void> {
     await this.habitsRepository.delete(id);
+  }
+
+  async completeEntry(id: number): Promise<UpdateResult> {
+    return await this.habitEntryRepository.update(id, { completed: true });
   }
 
   private generateHabitEntries(habit: Habit): HabitEntry[] {
