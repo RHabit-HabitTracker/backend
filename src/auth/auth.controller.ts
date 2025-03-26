@@ -33,7 +33,7 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @ApiCreatedResponse({ description: "User successfully created", type: User })
   @ApiBadRequestResponse({ description: "Bad Request" })
-  create(@Body() newUser: LoginUserDto) {
-    this.authService.register(newUser);
+  async create(@Body() newUser: LoginUserDto) {
+    return await this.authService.register(newUser);
   }
 }
