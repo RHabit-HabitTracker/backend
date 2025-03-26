@@ -26,16 +26,10 @@ export class CreateHabitDto {
 
   // Add other fields as needed based on your Habit entity
   // For example:
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: "How often the habit should be performed",
     example: "daily",
   })
   @IsString()
-  frequency?: string;
-
-  @ApiPropertyOptional({
-    description: "The owner of the Habit",
-    example: "2",
-  })
-  owner: number;
+  frequency: string;
 }

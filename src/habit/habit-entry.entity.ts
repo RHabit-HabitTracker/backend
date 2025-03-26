@@ -4,7 +4,7 @@ import { Habit } from "./habit.entity";
 
 @Entity()
 export class HabitEntry extends BaseEntity {
-  @ManyToOne(() => Habit)
+  @ManyToOne(() => Habit, (habit) => habit.entries, { onDelete: "CASCADE" })
   habit: Habit;
 
   @Column({ type: "datetime" })
