@@ -57,6 +57,15 @@ export class Habit extends BaseEntity {
   })
   frequency: "daily" | "weekly" | "monthly";
 
+  @ApiProperty({
+    example: "2025-04-25 00:00:00",
+  })
+  @Column({
+    nullable: true,
+    type: "datetime",
+  })
+  startDate?: Date;
+
   @Column({ nullable: true, type: "datetime", array: true })
   reminders?: Date[];
 

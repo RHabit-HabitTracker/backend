@@ -68,7 +68,15 @@ export class HabitService {
 
   private generateHabitEntries(habit: Habit): HabitEntry[] {
     const entries: HabitEntry[] = [];
-    let currentDate = new Date();
+    let currentDate;
+    console.log(habit.startDate);
+    if (!habit.startDate) {
+      currentDate = new Date();
+    } else {
+      currentDate = new Date(habit.startDate);
+    }
+
+    console.log(currentDate);
     const oneYearLater = new Date();
     oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
 

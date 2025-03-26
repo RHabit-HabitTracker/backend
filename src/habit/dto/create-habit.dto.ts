@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsArray } from "class-validator";
+import { IsString, IsNotEmpty, IsArray, IsDate } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Tag } from "src/tag/tag.entity";
 
@@ -33,4 +33,9 @@ export class CreateHabitDto {
   })
   @IsString()
   frequency: string;
+
+  @ApiPropertyOptional({
+    example: "2025-04-25 00:00:00",
+  })
+  startDate?: Date;
 }
