@@ -25,6 +25,7 @@ import { Habit } from "./habit.entity";
 import { CreateHabitDto } from "./dto/create-habit.dto";
 import { UpdateHabitDto } from "./dto/update-habit.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { UpdateResult } from "typeorm";
 
 @Controller("habit")
 @ApiBearerAuth()
@@ -98,5 +99,18 @@ export class HabitController {
   @ApiNotFoundResponse({ description: "Habit not found" })
   async remove(@Param("id", ParseIntPipe) id: number): Promise<void> {
     return this.habitService.delete(id);
+  }
+
+  @Post("entry/:id")
+  @ApiOperation({ summary: "Create a new habit" })
+  @ApiParam({ name: "id", description: "The ID of the entry to complete" })
+  @ApiOkResponse({
+    description: "The entry has been successfully created.",
+  })
+  @ApiBadRequestResponse({ description: "Invalid input data." })
+  async completeEntry(
+    @Param("id", ParseIntPipe) id: number
+  ): Promise<UpdateResult> {
+    return await this.habitService.completeEntry(id);
   }
 }
