@@ -55,7 +55,7 @@ export class AppModule implements OnModuleInit {
       habit.description = "description";
       habit.owner = user;
       habit.isPublic = true;
-      habit.frequency = "daily";
+      habit.frequency = "monthly";
       const tag = new Tag();
       tag.name = "tag1";
       tag.color = "blue";
