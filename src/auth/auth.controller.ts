@@ -23,8 +23,8 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @ApiCreatedResponse({ description: "Successfull login" })
   @ApiNotFoundResponse({ description: "Invalid Credentials" })
-  login(@Body() credentials: LoginUserDto) {
-    return this.authService.login(credentials);
+  async login(@Body() credentials: LoginUserDto) {
+    return await this.authService.login(credentials);
   }
 
   @Public()
@@ -33,7 +33,7 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @ApiCreatedResponse({ description: "User successfully created", type: User })
   @ApiBadRequestResponse({ description: "Bad Request" })
-  create(@Body() newUser: LoginUserDto) {
-    this.authService.register(newUser);
+  async create(@Body() newUser: LoginUserDto) {
+    return await this.authService.register(newUser);
   }
 }

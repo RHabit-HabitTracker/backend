@@ -46,14 +46,15 @@ export class AuthService {
     const email = loginUser.email;
     const password = loginUser.password;
     const salt = await bcrypt.genSalt();
+
+    if (!email || !password) {
+      throw new BadRequestException("Parameters missing");
+    }
+
     const user = await this.usersRepository.findOne({ where: { email } });
 
     if (user) {
       throw new BadRequestException("Email is allready in use");
-    }
-
-    if (!email || !password) {
-      throw new BadRequestException("Parameters missing");
     }
 
     const passwordHash = await bcrypt.hash(password, salt);
