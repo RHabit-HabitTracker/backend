@@ -58,7 +58,7 @@ export class AppModule implements OnModuleInit {
       habit.frequency = "monthly";
       const tag = new Tag();
       tag.name = "tag1";
-      tag.color = "blue";
+      tag.color = "#00ffff";
       habit.tags = [tag];
 
       const { id: habitId } = await this.habitService.create(1, habit);
