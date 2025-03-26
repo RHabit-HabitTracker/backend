@@ -23,8 +23,8 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @ApiCreatedResponse({ description: "Successfull login" })
   @ApiNotFoundResponse({ description: "Invalid Credentials" })
-  login(@Body() credentials: LoginUserDto) {
-    return this.authService.login(credentials);
+  async login(@Body() credentials: LoginUserDto) {
+    return await this.authService.login(credentials);
   }
 
   @Public()
