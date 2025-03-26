@@ -101,11 +101,11 @@ export class HabitController {
     return this.habitService.delete(id);
   }
 
-  @Post("entry/:id")
-  @ApiOperation({ summary: "Create a new habit" })
+  @Patch("entry/:id")
+  @ApiOperation({ summary: "Complete an entry" })
   @ApiParam({ name: "id", description: "The ID of the entry to complete" })
   @ApiOkResponse({
-    description: "The entry has been successfully created.",
+    description: "The entry has been successfully completed.",
   })
   @ApiBadRequestResponse({ description: "Invalid input data." })
   async completeEntry(
