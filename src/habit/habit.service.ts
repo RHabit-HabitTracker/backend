@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Habit } from "./habit.entity";
-import { EntityManager, Repository } from "typeorm";
-import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { Repository } from "typeorm";
 import { User } from "src/user/user.entity";
+import { HabitEntry } from "./habit-entry.entity";
 
 @Injectable()
 export class HabitService {
@@ -11,18 +11,57 @@ export class HabitService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @InjectRepository(Habit)
-    private readonly habitsRepository: Repository<Habit>
+    private readonly habitsRepository: Repository<Habit>,
+    @InjectRepository(HabitEntry)
+    private readonly habitEntryRepository: Repository<HabitEntry>
   ) {}
 
   async create(id: number, habit: Habit): Promise<Habit> {
     const owner = await this.userRepository.findOneBy({ id });
-    if (owner != null) {
-      habit.owner = owner;
-      var result = await this.habitsRepository.save(habit);
-    } else {
+    if (!owner) {
       throw new NotFoundException();
     }
-    return result;
+
+    habit.owner = owner;
+    const savedHabit = await this.habitsRepository.save(habit);
+
+    // Automatische Erstellung der HabitEntries basierend auf frequency
+    const entries = this.generateHabitEntries(savedHabit);
+    await this.habitEntryRepository.save(entries);
+
+    return savedHabit;
+  }
+
+  private generateHabitEntries(habit: Habit): HabitEntry[] {
+    const entries: HabitEntry[] = [];
+    let currentDate = new Date();
+    const oneYearLater = new Date();
+    oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+
+    while (currentDate <= oneYearLater) {
+      const entry = new HabitEntry();
+      entry.habit = habit;
+      entry.date = new Date(currentDate);
+      entry.completed = false;
+      entry.notes = "";
+
+      entries.push(entry);
+
+      // Je nach Häufigkeit das Datum anpassen
+      switch (habit.frequency) {
+        case "daily":
+          currentDate.setDate(currentDate.getDate() + 1);
+          break;
+        case "weekly":
+          currentDate.setDate(currentDate.getDate() + 7);
+          break;
+        case "monthly":
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          break;
+      }
+    }
+
+    return entries;
   }
 
   async readAll(id: number): Promise<Habit[]> {

@@ -60,7 +60,9 @@ export class Habit extends BaseEntity {
   @Column({ nullable: true, type: "datetime", array: true })
   reminders?: Date[];
 
-  @OneToMany(() => HabitEntry, (entry) => entry.habit, { cascade: true }) // cascade: true automatically adds entries if they were added to the array
+  @OneToMany(() => HabitEntry, (entry) => entry.habit, {
+    cascade: true,
+  })
   entries: HabitEntry[];
 
   @ManyToMany(() => Tag, { cascade: true })

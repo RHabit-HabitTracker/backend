@@ -4,8 +4,8 @@ import { Habit } from "./habit.entity";
 
 @Entity()
 export class HabitEntry extends BaseEntity {
-  @ManyToOne(() => HabitEntry)
-  habit: Habit[];
+  @ManyToOne(() => Habit, (habit) => habit.entries, { onDelete: "CASCADE" })
+  habit: Habit;
 
   @Column({ type: "datetime" })
   date: Date;
