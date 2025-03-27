@@ -113,4 +113,17 @@ export class HabitController {
   ): Promise<UpdateResult> {
     return await this.habitService.completeEntry(id);
   }
+
+  @Patch("entry/:id/uncomplete")
+  @ApiOperation({ summary: "Uncomplete an entry" })
+  @ApiParam({ name: "id", description: "The ID of the entry to uncomplete" })
+  @ApiOkResponse({
+    description: "The entry has been successfully set to not completed.",
+  })
+  @ApiBadRequestResponse({ description: "Invalid input data." })
+  async uncompleteEntry(
+    @Param("id", ParseIntPipe) id: number
+  ): Promise<UpdateResult> {
+    return await this.habitService.uncompleteEntry(id);
+  }
 }

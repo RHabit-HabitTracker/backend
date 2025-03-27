@@ -69,6 +69,10 @@ export class HabitService {
     return await this.habitEntryRepository.update(id, { completed: true });
   }
 
+  async uncompleteEntry(id: number): Promise<UpdateResult> {
+    return await this.habitEntryRepository.update(id, { completed: false });
+  }
+
   private generateHabitEntries(habit: Habit): HabitEntry[] {
     const entries: HabitEntry[] = [];
     let currentDate;
