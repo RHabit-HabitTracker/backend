@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, Put } from "@nestjs/common";
 import {
   ApiOperation,
   ApiBody,
@@ -12,10 +12,8 @@ import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { User } from "src/user/user.entity";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateEmailCredentialsDto } from "src/user/dto/update-email-credentials.dto";
 import { UpdatePasswordCredentialsDto } from "src/user/dto/update-password-credentials.dto";
-import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -41,7 +39,6 @@ export class AuthController {
     return await this.authService.register(newUser);
   }
 
-  @UseGuards(AuthGuard)
   @Put("/update-email")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Update email address of user" })
@@ -53,7 +50,6 @@ export class AuthController {
     return await this.authService.updateEmail(updateEmailDto);
   }
 
-  @UseGuards(AuthGuard)
   @Put("/update-password")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Update password of user" })
