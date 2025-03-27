@@ -11,6 +11,8 @@ import { JwtService } from "@nestjs/jwt";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { UserService } from "src/user/user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateEmailCredentialsDto } from "src/user/dto/update-email-credentials.dto";
+import { UpdatePasswordCredentialsDto } from "src/user/dto/update-password-credentials.dto";
 
 @Injectable()
 export class AuthService {
@@ -63,5 +65,57 @@ export class AuthService {
 
     console.log(partialUser);
     return await this.userService.create(partialUser);
+  }
+
+  async updateEmail(updateEmailDto: UpdateEmailCredentialsDto): Promise<{ success: boolean }> {
+    const { currentEmail, newEmail, password } = updateEmailDto;
+
+    // Check if mail already existss
+    const user = await this.usersRepository.findOne({ where: { email: currentEmail } });
+    if (!user) {
+      throw new NotFoundException("Benutzer nicht gefunden");
+    }
+
+    // Check if pw is valid
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isPasswordValid) {
+      throw new BadRequestException("Ungültiges Passwort");
+    }
+
+    // Check if new mail already in use
+    const existingUser = await this.usersRepository.findOne({ where: { email: newEmail } });
+    if (existingUser) {
+      throw new BadRequestException("E-Mail-Adresse wird bereits verwendet");
+    }
+
+    // E-Mail update via UserService
+    await this.userService.update(user.id, { email: newEmail });
+
+    return { success: true };
+  }
+
+  async updatePassword(updatePasswordDto: UpdatePasswordCredentialsDto): Promise<{ success: boolean }> {
+    const { email, currentPassword, newPassword } = updatePasswordDto;
+
+    //  check if user alrdy exists
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException("Benutzer nicht gefunden");
+    }
+
+    // check current pw
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isPasswordValid) {
+      throw new BadRequestException("Aktuelles Passwort ist ungültig");
+    }
+
+    // update pw
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+    
+    // update via UserService
+    await this.userService.update(user.id, { passwordHash });
+
+    return { success: true };
   }
 }

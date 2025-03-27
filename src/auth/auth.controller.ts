@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put, UseGuards } from "@nestjs/common";
 import {
   ApiOperation,
   ApiBody,
@@ -6,12 +6,16 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiBearerAuth,
 } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { User } from "src/user/user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateEmailCredentialsDto } from "src/user/dto/update-email-credentials.dto";
+import { UpdatePasswordCredentialsDto } from "src/user/dto/update-password-credentials.dto";
+import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -35,5 +39,29 @@ export class AuthController {
   @ApiBadRequestResponse({ description: "Bad Request" })
   async create(@Body() newUser: LoginUserDto) {
     return await this.authService.register(newUser);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put("/update-email")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Aktualisieren der E-Mail-Adresse eines Benutzers" })
+  @ApiBody({ type: UpdateEmailCredentialsDto })
+  @ApiOkResponse({ description: "E-Mail erfolgreich aktualisiert" })
+  @ApiNotFoundResponse({ description: "Benutzer nicht gefunden" })
+  @ApiBadRequestResponse({ description: "Ungültige Anfrage oder E-Mail bereits in Verwendung" })
+  async updateEmail(@Body() updateEmailDto: UpdateEmailCredentialsDto) {
+    return await this.authService.updateEmail(updateEmailDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put("/update-password")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Aktualisieren des Passworts eines Benutzers" })
+  @ApiBody({ type: UpdatePasswordCredentialsDto })
+  @ApiOkResponse({ description: "Passwort erfolgreich aktualisiert" })
+  @ApiNotFoundResponse({ description: "Benutzer nicht gefunden" })
+  @ApiBadRequestResponse({ description: "Ungültige Anfrage oder ungültiges aktuelles Passwort" })
+  async updatePassword(@Body() updatePasswordDto: UpdatePasswordCredentialsDto) {
+    return await this.authService.updatePassword(updatePasswordDto);
   }
 }
