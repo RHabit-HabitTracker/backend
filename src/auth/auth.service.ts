@@ -56,7 +56,7 @@ export class AuthService {
     const user = await this.usersRepository.findOne({ where: { email } });
 
     if (user) {
-      throw new BadRequestException("Email is allready in use");
+      throw new BadRequestException("Email is already in use");
     }
 
     const passwordHash = await bcrypt.hash(password, salt);
