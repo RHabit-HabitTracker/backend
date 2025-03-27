@@ -6,6 +6,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiConflictResponse,
 } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
@@ -32,6 +33,7 @@ export class AuthController {
   @ApiOperation({ summary: "Create a new user" })
   @ApiBody({ type: LoginUserDto })
   @ApiCreatedResponse({ description: "User successfully created", type: User })
+  @ApiConflictResponse({ description: "E-Mail is allready in use" })
   @ApiBadRequestResponse({ description: "Bad Request" })
   async create(@Body() newUser: LoginUserDto) {
     return await this.authService.register(newUser);

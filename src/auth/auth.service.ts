@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -54,7 +55,7 @@ export class AuthService {
     const user = await this.usersRepository.findOne({ where: { email } });
 
     if (user) {
-      throw new BadRequestException("Email is allready in use");
+      throw new ConflictException("Email is allready in use");
     }
 
     const passwordHash = await bcrypt.hash(password, salt);
