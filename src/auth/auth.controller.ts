@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put } from "@nestjs/common";
 import {
   ApiOperation,
   ApiBody,
@@ -6,12 +6,14 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiBearerAuth,
 } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { User } from "src/user/user.entity";
-import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateEmailCredentialsDto } from "src/user/dto/update-email-credentials.dto";
+import { UpdatePasswordCredentialsDto } from "src/user/dto/update-password-credentials.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -35,5 +37,27 @@ export class AuthController {
   @ApiBadRequestResponse({ description: "Bad Request" })
   async create(@Body() newUser: LoginUserDto) {
     return await this.authService.register(newUser);
+  }
+
+  @Put("/update-email")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update email address of user" })
+  @ApiBody({ type: UpdateEmailCredentialsDto })
+  @ApiOkResponse({ description: "Email successfully updated" })
+  @ApiNotFoundResponse({ description: "User not found" })
+  @ApiBadRequestResponse({ description: "Invalid request or email already in use" })
+  async updateEmail(@Body() updateEmailDto: UpdateEmailCredentialsDto) {
+    return await this.authService.updateEmail(updateEmailDto);
+  }
+
+  @Put("/update-password")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update password of user" })
+  @ApiBody({ type: UpdatePasswordCredentialsDto })
+  @ApiOkResponse({ description: "Password successfully updated" })
+  @ApiNotFoundResponse({ description: "User not found" })
+  @ApiBadRequestResponse({ description: "Invalid request or invalid current password" })
+  async updatePassword(@Body() updatePasswordDto: UpdatePasswordCredentialsDto) {
+    return await this.authService.updatePassword(updatePasswordDto);
   }
 }
