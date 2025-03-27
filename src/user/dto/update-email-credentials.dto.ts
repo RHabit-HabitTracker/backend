@@ -3,24 +3,24 @@ import { IsEmail, IsNotEmpty } from "class-validator";
 
 export class UpdateEmailCredentialsDto {
   @ApiProperty({
-    example: "aktuell@beispiel.de",
-    description: "Aktuelle E-Mail-Adresse des Benutzers",
+    example: "current@example.com",
+    description: "Current email address of the user",
   })
   @IsEmail()
   @IsNotEmpty()
   currentEmail: string;
 
   @ApiProperty({
-    example: "neu@beispiel.de",
-    description: "Neue E-Mail-Adresse des Benutzers",
+    example: "new@example.com",
+    description: "New email address of the user",
   })
   @IsEmail()
   @IsNotEmpty()
   newEmail: string;
 
   @ApiProperty({
-    example: "Passwort123",
-    description: "Passwort zur Bestätigung der Änderung",
+    example: "Password123",
+    description: "Password for verification of the change",
   })
   @IsNotEmpty()
   password: string;

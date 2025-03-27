@@ -44,11 +44,11 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put("/update-email")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Aktualisieren der E-Mail-Adresse eines Benutzers" })
+  @ApiOperation({ summary: "Update email address of user" })
   @ApiBody({ type: UpdateEmailCredentialsDto })
-  @ApiOkResponse({ description: "E-Mail erfolgreich aktualisiert" })
-  @ApiNotFoundResponse({ description: "Benutzer nicht gefunden" })
-  @ApiBadRequestResponse({ description: "Ungültige Anfrage oder E-Mail bereits in Verwendung" })
+  @ApiOkResponse({ description: "Email successfully updated" })
+  @ApiNotFoundResponse({ description: "User not found" })
+  @ApiBadRequestResponse({ description: "Invalid request or email already in use" })
   async updateEmail(@Body() updateEmailDto: UpdateEmailCredentialsDto) {
     return await this.authService.updateEmail(updateEmailDto);
   }
@@ -56,11 +56,11 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put("/update-password")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Aktualisieren des Passworts eines Benutzers" })
+  @ApiOperation({ summary: "Update password of user" })
   @ApiBody({ type: UpdatePasswordCredentialsDto })
-  @ApiOkResponse({ description: "Passwort erfolgreich aktualisiert" })
-  @ApiNotFoundResponse({ description: "Benutzer nicht gefunden" })
-  @ApiBadRequestResponse({ description: "Ungültige Anfrage oder ungültiges aktuelles Passwort" })
+  @ApiOkResponse({ description: "Password successfully updated" })
+  @ApiNotFoundResponse({ description: "User not found" })
+  @ApiBadRequestResponse({ description: "Invalid request or invalid current password" })
   async updatePassword(@Body() updatePasswordDto: UpdatePasswordCredentialsDto) {
     return await this.authService.updatePassword(updatePasswordDto);
   }
